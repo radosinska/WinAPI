@@ -1,88 +1,72 @@
 #include "Form.h"
 #include "Application.h"
 
-#include <list>
+LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
+{
+	return DefWindowProc(hWnd, Msg, wParam, lParam);
+}
 
 Form::Form()
 {
-	this->Controls = new ControlCollection(this);
+	this->style = WS_OVERLAPPEDWINDOW;
+	this->styleEx = WS_EX_CLIENTEDGE;
 }
 
 Form::~Form()
 {
 }
 
-LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
+bool Form::RegisterClass()
 {
-	switch (Msg)
-	{
-	case WM_CLOSE:
-		DestroyWindow(hWnd);
-		break;
+	this->className = this->Name;
 
-	case WM_DESTROY:
-		PostQuitMessage(0);
-		break;
+	WNDCLASSEX wcex;
 
-	default:
-		return DefWindowProc(hWnd, Msg, wParam, lParam);
-	}
-	return 0;
+	wcex.cbSize = sizeof(WNDCLASSEX);
+
+	wcex.style = CS_HREDRAW | CS_VREDRAW;
+	wcex.lpfnWndProc = Application::WndProc;
+	wcex.cbClsExtra = 0;
+	wcex.cbWndExtra = 0;
+	wcex.hInstance = Application::hInstance;
+	wcex.hIcon = LoadIcon(NULL, IDI_APPLICATION);
+	wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
+	wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW);
+	wcex.lpszMenuName = NULL;
+	wcex.lpszClassName = this->className;
+	wcex.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
+
+	return RegisterClassEx(&wcex) != 0;
 }
 
 void Form::ResumeLayout(bool performLayout)
 {
-	hWnd = NULL;
-
-	WNDCLASSEX wce;
-
-	wce.cbSize = sizeof(WNDCLASSEX);
-	wce.style = 0;
-	wce.lpfnWndProc = WndProc;
-	wce.cbClsExtra = 0;
-	wce.cbWndExtra = 0;
-	wce.hInstance = Application::hInstance;
-	wce.hIcon = LoadIcon(NULL, IDI_APPLICATION);
-	wce.hCursor = LoadCursor(NULL, IDC_ARROW);
-	wce.hbrBackground = (HBRUSH)COLOR_WINDOW;
-	wce.lpszMenuName = NULL;
-	wce.lpszClassName = this->Name;
-	wce.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
-
-	if (!RegisterClassEx(&wce))
+	if (!RegisterClass())
 	{
 		return;
 	}
 
-	hWnd = CreateWindowEx(
-		WS_EX_CLIENTEDGE,
-		this->Name,
-		this->Text,
-		WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT,
-		CW_USEDEFAULT,
-		320,
-		240,
-		NULL,
-		NULL,
-		Application::hInstance,
-		NULL
-		);
-
-	if (hWnd == NULL)
+	if (this->ClientSize != NULL)
 	{
-		return;
+		this->Size = new Drawing::Size(this->ClientSize->Width + 16, this->ClientSize->Height + 39);
 	}
 
-	///
-	std::list<Control*>::iterator control;
-	for (control = this->Controls->begin();
-		control != this->Controls->end();
-		++control)
-	{
-		(*control)->CreateControl();
-	}
+	this->CreateControl();
+}
 
-	ShowWindow(hWnd, Application::nCmdShow);
-	UpdateWindow(hWnd);
+void Form::WndProc(Message *m)
+{
+	switch (m->Msg)
+	{
+	case WM_CLOSE: {
+		FormClosing(this, new EventArgs());
+		DestroyWindow(this->hWnd);
+	} break;
+	case WM_DESTROY: {
+		FormClosed(this, new EventArgs());
+		PostQuitMessage(0);
+	} break;
+	default:
+		Control::WndProc(m);
+	}
 }

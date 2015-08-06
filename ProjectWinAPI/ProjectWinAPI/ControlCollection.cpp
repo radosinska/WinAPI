@@ -1,4 +1,5 @@
 #include "ControlCollection.h"
+#include "Control.h"
 
 ControlCollection::ControlCollection(Control *owner)
 {

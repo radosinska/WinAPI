@@ -77,21 +77,30 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Button.h" />
     <ClInclude Include="Control.h" />
     <ClInclude Include="ControlCollection.h" />
+    <ClInclude Include="Event.h" />
+    <ClInclude Include="EventArgs.h" />
+    <ClInclude Include="EventHandler.h" />
     <ClInclude Include="Form.h" />
     <ClInclude Include="Form1.h" />
+    <ClInclude Include="Message.h" />
+    <ClInclude Include="MessageBox.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Program.h" />
     <ClInclude Include="Size.h" />
+    <ClInclude Include="TextBox.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="Control.cpp" />
     <ClCompile Include="ControlCollection.cpp" />
     <ClCompile Include="Form.cpp" />
     <ClCompile Include="Form1.cpp" />
     <ClCompile Include="Program.cpp" />
+    <ClCompile Include="TextBox.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

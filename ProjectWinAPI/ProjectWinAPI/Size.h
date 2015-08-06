@@ -1,7 +1,6 @@
 #ifndef SIZE_H
 #define SIZE_H
 
-//TODO: add to new director or delete namespace
 namespace Drawing
 {
 

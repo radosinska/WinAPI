@@ -2,25 +2,42 @@
 #define CONTROL_H
 
 #include <windows.h>
-
+#include "ControlCollection.h"
 #include "Size.h"
 #include "Point.h"
+#include "Message.h"
+#include "EventHandler.h"
 
 class Control
 {
+protected:
+	LPSTR className;
+	DWORD style;
+	DWORD styleEx;
 public:
 	HWND hWnd;
 	LPSTR Name;
 	LPSTR Text;
-	Control *parent;
-public:
+	Drawing::Point *Location;
 	Drawing::Size *Size;
-	Point *Location;
+	bool UseVisualStyleBackColor;
+	int TabIndex;
+	bool TabStop;
+	bool AutoSize;
+	ControlCollection *Controls;
 public:
 	Control();
 	~Control();
 public:
-	virtual void CreateControl();
+	void ResumeLayout(bool performLayout);
+	void SuspendLayout();
+	void CreateControl();
+public: //protected:
+	virtual void WndProc(Message *m);
+public:
+	Control *parent;
+public:
+	EventHandler Click;
 };
 
 #endif

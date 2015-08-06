@@ -10,13 +10,18 @@
 class Form : public Control
 {
 public:
+	Drawing::Size *ClientSize;
+public:
 	Form();
 	~Form();
 public:
-	Drawing::Size *ClientSize;
-	ControlCollection *Controls;
-public:
 	void ResumeLayout(bool performLayout);
+	void WndProc(Message *m);
+private:
+	bool RegisterClass();
+public:
+	EventHandler FormClosing;
+	EventHandler FormClosed;
 };
 
 #endif

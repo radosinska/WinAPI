@@ -1,12 +1,14 @@
 #ifndef POINT_H
 #define POINT_H
 
-//TODO: maybe add to Drawing namespace ??
-typedef struct Point
+namespace Drawing
 {
-	int X;
-	int Y;
-	Point(int x, int y) : X(x), Y(y) {};
-};
 
+	typedef struct Point
+	{
+		int X;
+		int Y;
+		Point(int x, int y) : X(x), Y(y) {};
+	};
+}
 #endif

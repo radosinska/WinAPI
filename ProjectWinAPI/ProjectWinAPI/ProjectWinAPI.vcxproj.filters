@@ -13,51 +13,90 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Drawing">
+      <UniqueIdentifier>{ba9e16c2-89e7-49c2-9b48-302f24ede865}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Forms">
+      <UniqueIdentifier>{4bf9ad10-0c5d-4acf-9730-4b6c576d12fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Forms">
+      <UniqueIdentifier>{727b67a4-2acf-4a5b-927e-5f0c500536a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Events">
+      <UniqueIdentifier>{4844b98b-5797-4e6d-add4-9a978fde5501}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Program.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Application.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Form.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Form1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Size.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Point.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="Size.h">
+      <Filter>Header Files\Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="Application.h">
+      <Filter>Header Files\Forms</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Header Files\Forms</Filter>
     </ClInclude>
     <ClInclude Include="Control.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Forms</Filter>
     </ClInclude>
     <ClInclude Include="ControlCollection.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Forms</Filter>
+    </ClInclude>
+    <ClInclude Include="Form.h">
+      <Filter>Header Files\Forms</Filter>
+    </ClInclude>
+    <ClInclude Include="EventHandler.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="EventArgs.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Message.h">
+      <Filter>Header Files\Forms</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageBox.h">
+      <Filter>Header Files\Forms</Filter>
+    </ClInclude>
+    <ClInclude Include="TextBox.h">
+      <Filter>Header Files\Forms</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Program.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Application.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Form.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Form1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>Source Files\Forms</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Source Files\Forms</Filter>
+    </ClCompile>
     <ClCompile Include="Control.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Forms</Filter>
     </ClCompile>
     <ClCompile Include="ControlCollection.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Forms</Filter>
+    </ClCompile>
+    <ClCompile Include="Form.cpp">
+      <Filter>Source Files\Forms</Filter>
+    </ClCompile>
+    <ClCompile Include="TextBox.cpp">
+      <Filter>Source Files\Forms</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
