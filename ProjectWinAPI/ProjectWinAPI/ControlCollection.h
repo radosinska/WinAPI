@@ -1,6 +1,8 @@
 #ifndef ControlCollection_H
 #define ControlCollection_H
 
+#define _WINSOCKAPI_
+
 #include <list>
 
 class Control;

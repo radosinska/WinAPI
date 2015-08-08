@@ -1,6 +1,8 @@
 #ifndef MESSAGE_H
 #define MESSAGE_H
 
+#define _WINSOCKAPI_
+
 #include <windows.h>
 
 typedef struct Message

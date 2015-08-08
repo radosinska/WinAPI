@@ -7,6 +7,7 @@
 void Program::Main()
 {
 	Application::Run(new Form1());
+	//Application::Run(Form1::getInstance());
 }
 
 int WINAPI WinMain(HINSTANCE hInstance,

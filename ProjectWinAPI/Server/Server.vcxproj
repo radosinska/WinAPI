@@ -11,16 +11,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{BAF07248-0F9D-420B-BAA9-8BFD2EC1B0B8}</ProjectGuid>
+    <ProjectGuid>{F4BF9F26-E211-4F15-9D10-5A8CCE5BE0EE}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>ProjectWinAPI</RootNamespace>
+    <RootNamespace>Server</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -54,7 +54,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <SubSystem>NotSet</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -76,40 +76,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Application.h" />
-    <ClInclude Include="Button.h" />
-    <ClInclude Include="ClientNetwork.h" />
-    <ClInclude Include="ClientProcedures.h" />
-    <ClInclude Include="Control.h" />
-    <ClInclude Include="ControlCollection.h" />
-    <ClInclude Include="Event.h" />
-    <ClInclude Include="EventArgs.h" />
-    <ClInclude Include="EventHandler.h" />
-    <ClInclude Include="Form.h" />
-    <ClInclude Include="Form1.h" />
-    <ClInclude Include="Message.h" />
-    <ClInclude Include="MessageBox.h" />
     <ClInclude Include="NetworkData.h" />
     <ClInclude Include="NetworkServices.h" />
-    <ClInclude Include="Point.h" />
-    <ClInclude Include="Program.h" />
-    <ClInclude Include="Size.h" />
-    <ClInclude Include="TextBox.h" />
-    <ClInclude Include="TextView.h" />
+    <ClInclude Include="ServerNetwork.h" />
+    <ClInclude Include="ServerProcedures.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Application.cpp" />
-    <ClCompile Include="Button.cpp" />
-    <ClCompile Include="ClientNetwork.cpp" />
-    <ClCompile Include="ClientProcedures.cpp" />
-    <ClCompile Include="Control.cpp" />
-    <ClCompile Include="ControlCollection.cpp" />
-    <ClCompile Include="Form.cpp" />
-    <ClCompile Include="Form1.cpp" />
     <ClCompile Include="NetworkServices.cpp" />
+    <ClCompile Include="ServerNetwork.cpp" />
+    <ClCompile Include="ServerProcedures.cpp" />
     <ClCompile Include="Program.cpp" />
-    <ClCompile Include="TextBox.cpp" />
-    <ClCompile Include="TextView.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

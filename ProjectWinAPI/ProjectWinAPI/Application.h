@@ -1,6 +1,8 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
+#define _WINSOCKAPI_
+
 #include <windows.h>
 #include "Form.h"
 

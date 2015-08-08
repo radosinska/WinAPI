@@ -1,6 +1,8 @@
 #ifndef CONTROL_H
 #define CONTROL_H
 
+#define _WINSOCKAPI_
+
 #include <windows.h>
 #include "ControlCollection.h"
 #include "Size.h"

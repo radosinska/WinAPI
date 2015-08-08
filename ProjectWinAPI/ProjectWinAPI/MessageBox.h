@@ -1,6 +1,8 @@
 #ifndef MESSAGEBOX_H
 #define MESSAGEBOX_H
 
+#define _WINSOCKAPI_
+
 #include <windows.h>
 
 

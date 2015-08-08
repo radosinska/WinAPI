@@ -1,6 +1,8 @@
 #ifndef FORM_H
 #define FORM_H
 
+#define _WINSOCKAPI_
+
 #include <windows.h>
 
 #include "Size.h"
