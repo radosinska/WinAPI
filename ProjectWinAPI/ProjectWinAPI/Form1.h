@@ -9,33 +9,23 @@
 #include "EventArgs.h"
 #include "MessageBox.h"
 #include "TextView.h"
+#include "ImageButton.h"
+#include "resource.h"
 
 class Form1 : public Form
 {
-//public:
-//	static Form1& getInstance()
-//	{
-//		static Form1 instance;
-//		return instance;
-//	}
-//private:
-//	Form1();
-//	Form1(Form1 const&); //Don't implement
-//	void operator=(Form1 const&); //Don't implement
-//
 public:
 	Form1();
 	~Form1();
 
-//public:
-//	static TextView& GetTextView();
-
 private:
 	void InitializeComponent();
+
 private:
 	Button *button1;
 	TextBox *textBox1;
 	TextView *textView1;
+	ImageButton *imageButton1;
 
 private:
 	void button1_Click(void* sender, EventArgs* e);

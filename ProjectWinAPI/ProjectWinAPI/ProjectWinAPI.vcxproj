@@ -87,12 +87,14 @@
     <ClInclude Include="EventHandler.h" />
     <ClInclude Include="Form.h" />
     <ClInclude Include="Form1.h" />
+    <ClInclude Include="ImageButton.h" />
     <ClInclude Include="Message.h" />
     <ClInclude Include="MessageBox.h" />
     <ClInclude Include="NetworkData.h" />
     <ClInclude Include="NetworkServices.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Program.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Size.h" />
     <ClInclude Include="TextBox.h" />
     <ClInclude Include="TextView.h" />
@@ -106,10 +108,17 @@
     <ClCompile Include="ControlCollection.cpp" />
     <ClCompile Include="Form.cpp" />
     <ClCompile Include="Form1.cpp" />
+    <ClCompile Include="ImageButton.cpp" />
     <ClCompile Include="NetworkServices.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="TextBox.cpp" />
     <ClCompile Include="TextView.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="bitmap1.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

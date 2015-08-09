@@ -61,6 +61,8 @@ void Form1::button1_Click(void* sender, EventArgs* e)
 
 	SetWindowText(textBox1->hWnd, (LPSTR)NULL);
 
+
+
 	VirtualFree(message, 0, MEM_RELEASE);
 }
 
@@ -80,6 +82,8 @@ void Form1::InitializeComponent()
 	this->button1 = new Button();
 	this->textBox1 = new TextBox();
 	this->textView1 = new TextView();
+	this->imageButton1 = new ImageButton();
+
 	this->SuspendLayout();
 
 	// 
@@ -107,6 +111,15 @@ void Form1::InitializeComponent()
 	this->button1->Click += new EventHandler::New<Form1>(this, &Form1::button1_Click);
 
 	// 
+	// imageButton1
+	// 
+	this->imageButton1->Location = new Drawing::Point(20, 240);
+	this->imageButton1->Name = "imageButton1";
+	this->imageButton1->Size = new Drawing::Size(80, 80);
+	this->imageButton1->Text = "withImage";
+
+
+	// 
 	// MainForm
 	// 
 	this->ClientSize = new Drawing::Size(500, 500);
@@ -114,6 +127,7 @@ void Form1::InitializeComponent()
 	this->Controls->Add(this->button1);
 	this->Controls->Add(this->textBox1);
 	this->Controls->Add(this->textView1);
+	this->Controls->Add(this->imageButton1);
 
 	this->FormClosing += new EventHandler::New<Form1>(this, &Form1::Form1_FormClosing);
 	this->FormClosed += new EventHandler::New<Form1>(this, &Form1::Form1_FormClosed);
@@ -121,4 +135,8 @@ void Form1::InitializeComponent()
 	this->Name = "MainForm";
 	this->Text = "Nazwa aplikacji";
 	this->ResumeLayout(false);
+
+	//TODO:To past in different place; only to test 
+	HBITMAP b = LoadBitmap(Application::hInstance, MAKEINTRESOURCE(IDB_BITMAP1));
+	SendMessage(this->imageButton1->hWnd, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)b);
 }
