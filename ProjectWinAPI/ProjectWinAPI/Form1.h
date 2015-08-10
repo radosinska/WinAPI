@@ -3,6 +3,10 @@
 
 #define _WINSOCKAPI_ 
 
+#define ARRAY_LENGTH 40
+#define ROW_LENGTH 4
+#define VECTOR_LENGTH 7
+
 #include "Form.h"
 #include "Button.h"
 #include "TextBox.h"
@@ -21,21 +25,22 @@ public:
 private:
 	void InitializeComponent();
 
-private:
-	Button *button1;
-	TextBox *textBox1;
-	TextView *textView1;
-	ImageButton *imageButton1;
+private:	
+	TextView *messagesView;
+	TextBox *messageBox;
+	Button *sendButton;
 
+	Button *checkButton;
+
+	ImageButton **gameButtonArray;
+	ImageButton **resultButtonArray;
+	ImageButton **buttonVector;
+	
 private:
-	void button1_Click(void* sender, EventArgs* e);
+	void sendButton_Click(void* sender, EventArgs* e);
 
 	void Form1_FormClosing(void* sender, EventArgs* e);
 	void Form1_FormClosed(void* sender, EventArgs* e);
-
-private:
-	void RefreshTextView(PSTR,int);
-	//void updateLoop(void *);
 };
 
 #endif

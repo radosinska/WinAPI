@@ -38,32 +38,209 @@ void updateLoop(void * arg)
 Form1::Form1()
 {
 	client = new ClientProcedures();
+	
+	gameButtonArray = new ImageButton*[ARRAY_LENGTH];
+	resultButtonArray = new ImageButton*[ARRAY_LENGTH];
+	buttonVector = new ImageButton*[VECTOR_LENGTH];
 
 	InitializeComponent();
 
-	_beginthread(updateLoop, 0, textView1->hWnd);
+	_beginthread(updateLoop, 0, messagesView->hWnd);
 }
 
 Form1::~Form1()
 {
+	delete[] gameButtonArray;
+	delete[] resultButtonArray;
+	delete[] buttonVector;
 }
 
-void Form1::button1_Click(void* sender, EventArgs* e)
+void Form1::InitializeComponent()
+{
+	this->messagesView = new TextView();
+	this->messageBox = new TextBox();
+	this->sendButton = new Button();
+
+	this->checkButton = new Button();
+
+	this->SuspendLayout();
+
+	// 
+	// messagesView
+	// 
+	this->messagesView->Location = new Drawing::Point(300, 35);
+	this->messagesView->Name = "textBox2";
+	this->messagesView->Size = new Drawing::Size(365, 250);
+	
+	// 
+	// messageBox
+	// 
+	this->messageBox->Location = new Drawing::Point(300, 295);
+	this->messageBox->Name = "messageBox";
+	this->messageBox->Size = new Drawing::Size(365, 110);
+
+	// 
+	// sendButton
+	// 
+	this->sendButton->Location = new Drawing::Point(585, 415);
+	this->sendButton->Name = "sendButton";
+	this->sendButton->Size = new Drawing::Size(80, 25);
+	this->sendButton->Text = "send";
+
+	this->sendButton->Click += new EventHandler::New<Form1>(this, &Form1::sendButton_Click);
+	
+	// 
+	// checkButton
+	// 
+	this->checkButton->Location = new Drawing::Point(45, 385);
+	this->checkButton->Name = "checkButton";
+	this->checkButton->Size = new Drawing::Size(210, 20);
+	this->checkButton->Text = "check";
+
+	Drawing::Size * gameButtonSize = new Drawing::Size(25, 25);
+
+	int i = 0;
+	int x = 0;
+	int y = 0;
+
+	for (i; i < ARRAY_LENGTH; i++)
+	{
+		gameButtonArray[i] = new ImageButton();
+
+		int remainder = i % 4;
+		switch (remainder)
+		{
+		case 0:
+			y += 35;
+			x = 35;
+			break;
+		default:
+			x += 35;
+			break;
+		}
+		
+		gameButtonArray[i]->Location = new Drawing::Point(x, y);
+		gameButtonArray[i]->Size = gameButtonSize;
+	}
+
+	Drawing::Size * resultButtonSize = new Drawing::Size(15, 15);
+
+	i = 0;
+	x = 0;
+	y = 5;
+	for (i; i < ARRAY_LENGTH; i++)
+	{
+		resultButtonArray[i] = new ImageButton();
+
+		int remainder = i % 4;
+		switch (remainder)
+		{
+		case 0:
+			x = 175;
+			y += 35;
+			break;
+		default:
+			x += 25;
+			break;
+		}
+
+		resultButtonArray[i]->Location = new Drawing::Point(x, y);
+		resultButtonArray[i]->Size = resultButtonSize;
+	}
+	
+	y = 415-50;
+	i = 0;
+	for (i; i < VECTOR_LENGTH; i++)
+	{
+		buttonVector[i] = new ImageButton();
+
+		int remainder = i % 7;
+		switch (remainder)
+		{
+		case 0:
+			y += 50;
+			x = 35;
+			break;
+		default:
+			x += 35;
+			break;
+		}
+
+		buttonVector[i]->Location = new Drawing::Point(x, y);
+		buttonVector[i]->Size = gameButtonSize;
+	}
+
+	// 
+	// MainForm
+	// 
+	this->ClientSize = new Drawing::Size(700, 470);
+	
+	this->Controls->Add(this->messagesView);
+	this->Controls->Add(this->messageBox);
+	this->Controls->Add(this->sendButton);
+
+	this->Controls->Add(this->checkButton);
+
+	i = 0;
+	for (i; i < ARRAY_LENGTH; i++)
+	{
+		this->Controls->Add(gameButtonArray[i]);
+	}
+
+	i = 0;
+	for (i; i < ARRAY_LENGTH; i++)
+	{
+		this->Controls->Add(resultButtonArray[i]);
+	}
+
+	i = 0;
+	for (i; i < VECTOR_LENGTH; i++)
+	{
+		this->Controls->Add(buttonVector[i]);
+	}
+
+	//this->FormClosing += new EventHandler::New<Form1>(this, &Form1::Form1_FormClosing);
+	//this->FormClosed += new EventHandler::New<Form1>(this, &Form1::Form1_FormClosed);
+
+	this->Name = "MainForm";
+	this->Text = "Nazwa aplikacji";
+	this->ResumeLayout(false);
+
+	i = 0;
+	HBITMAP hBitmap;
+	int idBitmap = IDB_BITMAP1;
+
+	i = ARRAY_LENGTH - ROW_LENGTH;
+	for (i; i < ARRAY_LENGTH; i++)
+	{
+		hBitmap = LoadBitmap(Application::hInstance, MAKEINTRESOURCE(idBitmap));
+		SendMessage(gameButtonArray[i]->hWnd, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBitmap);
+	}
+
+	i = 0;
+	for (i; i < VECTOR_LENGTH; i++)
+	{
+		hBitmap = LoadBitmap(Application::hInstance, MAKEINTRESOURCE(idBitmap));
+		SendMessage(buttonVector[i]->hWnd, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBitmap);
+		idBitmap++;
+	}
+}
+
+void Form1::sendButton_Click(void* sender, EventArgs* e)
 {
 	PSTR message;
 	int textLength;
 
-	textLength = GetWindowTextLength(textBox1->hWnd);
+	textLength = GetWindowTextLength(messageBox->hWnd);
 	message = (PSTR)VirtualAlloc((LPVOID)NULL, (DWORD)(textLength + 1), MEM_COMMIT, PAGE_READWRITE);
-	GetWindowTextA(textBox1->hWnd, message, textLength + 1);
+	GetWindowTextA(messageBox->hWnd, message, textLength + 1);
 
 	client->sendActionPackets(message);
 
-	SetWindowText(textBox1->hWnd, (LPSTR)NULL);
-
-
+	SetWindowText(messageBox->hWnd, (LPSTR)NULL);
 
 	VirtualFree(message, 0, MEM_RELEASE);
+
 }
 
 void Form1::Form1_FormClosing(void* sender, EventArgs* e)
@@ -75,68 +252,4 @@ void Form1::Form1_FormClosing(void* sender, EventArgs* e)
 void Form1::Form1_FormClosed(void* sender, EventArgs* e)
 {
 	MessageBox::Show("FormClosed", "MessageBox");
-}
-
-void Form1::InitializeComponent()
-{
-	this->button1 = new Button();
-	this->textBox1 = new TextBox();
-	this->textView1 = new TextView();
-	this->imageButton1 = new ImageButton();
-
-	this->SuspendLayout();
-
-	// 
-	// textView1
-	// 
-	this->textView1->Location = new Drawing::Point(20, 20);
-	this->textView1->Name = "textBox2";
-	this->textView1->Size = new Drawing::Size(300, 150);
-	
-	// 
-	// textBox1
-	// 
-	this->textBox1->Location = new Drawing::Point(20, 180);
-	this->textBox1->Name = "textBox1";
-	this->textBox1->Size = new Drawing::Size(300, 50);
-
-
-	// 
-	// button1
-	// 
-	this->button1->Location = new Drawing::Point(240, 240);
-	this->button1->Name = "button1";
-	this->button1->Size = new Drawing::Size(80, 25);
-	this->button1->Text = "send";
-	this->button1->Click += new EventHandler::New<Form1>(this, &Form1::button1_Click);
-
-	// 
-	// imageButton1
-	// 
-	this->imageButton1->Location = new Drawing::Point(20, 240);
-	this->imageButton1->Name = "imageButton1";
-	this->imageButton1->Size = new Drawing::Size(80, 80);
-	this->imageButton1->Text = "withImage";
-
-
-	// 
-	// MainForm
-	// 
-	this->ClientSize = new Drawing::Size(500, 500);
-
-	this->Controls->Add(this->button1);
-	this->Controls->Add(this->textBox1);
-	this->Controls->Add(this->textView1);
-	this->Controls->Add(this->imageButton1);
-
-	this->FormClosing += new EventHandler::New<Form1>(this, &Form1::Form1_FormClosing);
-	this->FormClosed += new EventHandler::New<Form1>(this, &Form1::Form1_FormClosed);
-
-	this->Name = "MainForm";
-	this->Text = "Nazwa aplikacji";
-	this->ResumeLayout(false);
-
-	//TODO:To past in different place; only to test 
-	HBITMAP b = LoadBitmap(Application::hInstance, MAKEINTRESOURCE(IDB_BITMAP1));
-	SendMessage(this->imageButton1->hWnd, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)b);
 }

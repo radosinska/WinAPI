@@ -115,10 +115,16 @@
     <ClCompile Include="TextView.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="bitmap1.bmp" />
+    <ResourceCompile Include="Resource.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Resource.rc" />
+    <Image Include="..\..\..\..\..\Desktop\colors\blue.bmp" />
+    <Image Include="..\..\..\..\..\Desktop\colors\green.bmp" />
+    <Image Include="..\..\..\..\..\Desktop\colors\orange.bmp" />
+    <Image Include="..\..\..\..\..\Desktop\colors\pink.bmp" />
+    <Image Include="..\..\..\..\..\Desktop\colors\purple.bmp" />
+    <Image Include="..\..\..\..\..\Desktop\colors\red.bmp" />
+    <Image Include="..\..\..\..\..\Desktop\colors\yellow.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
