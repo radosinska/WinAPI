@@ -481,18 +481,18 @@ void AddMessageToTextView(HWND hTextView, char * message, int clientId)
 	if (Form1::clientId == clientId)
 	{
 		newContent = (char *)malloc(1 + contentLength + strlen(message) + strlen("\r\nYou >> "));
-		strcpy(newContent, content);
-		strcat(newContent, "You >> ");
+		strcpy(newContent, "You >> ");
 		strcat(newContent, message);
 		strcat(newContent, "\r\n");
+		strcat(newContent, content);
 	}
 	else
 	{
 		newContent = (char *)malloc(1 + contentLength + strlen(message) + strlen("\r\nYour friend >> "));
-		strcpy(newContent, content);
-		strcat(newContent, "Your friend >> ");
+		strcpy(newContent, "Your friend >> ");
 		strcat(newContent, message);
 		strcat(newContent, "\r\n");
+		strcat(newContent, content);
 	}
 
 	SetWindowText(hTextView, newContent);
