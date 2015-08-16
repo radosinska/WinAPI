@@ -122,6 +122,7 @@
     <Image Include="..\..\..\..\..\Desktop\colors\black.bmp" />
     <Image Include="..\..\..\..\..\Desktop\colors\blue.bmp" />
     <Image Include="..\..\..\..\..\Desktop\colors\green.bmp" />
+    <Image Include="..\..\..\..\..\Desktop\colors\grey.bmp" />
     <Image Include="..\..\..\..\..\Desktop\colors\orange.bmp" />
     <Image Include="..\..\..\..\..\Desktop\colors\pink.bmp" />
     <Image Include="..\..\..\..\..\Desktop\colors\purple.bmp" />

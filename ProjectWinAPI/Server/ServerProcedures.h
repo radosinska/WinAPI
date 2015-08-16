@@ -17,9 +17,10 @@ public:
 
 	void receiveFromClients();
 
+	void sendInitPacket();
 	void sendStartGamePackets();
-	void sendMessagePackets(char[]);
-	void sendGamePackets(int,int);
+	void sendMessagePackets(char[],int);
+	void sendGamePackets(int,int,int,int,int);
 
 private:
 

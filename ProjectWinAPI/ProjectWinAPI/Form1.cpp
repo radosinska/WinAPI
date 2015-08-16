@@ -5,12 +5,14 @@
 ClientProcedures * client;
 
 void updateLoop(void *);
-void AddMessageToTextView(HWND, char*);
+void AddMessageToTextView(HWND, char*, int clientId);
 void ActiveGameLevel(int, ImageButton**);
 void DisableGameLevel(int, ImageButton**);
+void SetInactiveFields(int, ImageButton**);
 
 int Form1::level = 0;
 int Form1::clientId = 0;
+bool Form1::isGameStart = false;
 
 Form1::Form1()
 {
@@ -22,58 +24,12 @@ Form1::Form1()
 
 	InitializeComponent();
 
-	//WaitingForOponent();
-
-	//TODO:temporary place for initialization; shoul be set by server
 	level = 1;
 
-	//const int length = ARRAY_LENGTH + 1 + 1;
-	//HWND * hCollection;
-
-	//hCollection = new HWND[length];
-
-	//hCollection[0] = this->hWnd;
-	//hCollection[1] = messagesView->hWnd;
-
-	//for (int i = 2; i < length; i++)
-	//{
-	//	hCollection[i] = resultButtonArray[i - 2]->hWnd;
-	//}
-
-	//const int length = ARRAY_LENGTH + ARRAY_LENGTH + ARRAY_LENGTH + 1 + 1;
-	//HWND * hCollection;
-
-	//hCollection = new HWND[length];
-
-	//hCollection[0] = this->hWnd;
-	//hCollection[1] = messagesView->hWnd;
-
-	//int index0 = 2;
-	//for (int i = index0; i < length; i++)
-	//{
-	//	hCollection[i] = resultButtonArray[i - index0]->hWnd;
-	//}
-
-	//index0 = ARRAY_LENGTH + 2;
-	//for (int i = index0; i < length; i++)
-	//{
-	//	hCollection[i] = resultButtonArray[i - index0]->hWnd;
-	//}
-
-	//index0 = ARRAY_LENGTH + ARRAY_LENGTH + 2
-	//	for (int i = index0; i < length; i++)
-	//	{
-	//		hCollection[i] = gameButtonArray[i - index0]->;
-	//	}
-
-	//_beginthread(updateLoop, 0, hCollection);
-	//_beginthread(updateLoop, 0, hCollection);
-	//_beginthread(updateLoop, 0, (void*)this->checkButton);
-
-	DataToPass * data=new DataToPass;
+	DataToPass * data = new DataToPass;
 	data->hForm1 = this->hWnd;
 	data->hTextView = this->messagesView->hWnd;
-	
+
 	data->hResultButtons = new HWND[ARRAY_LENGTH];
 	for (int i = 0; i < ARRAY_LENGTH; i++)
 	{
@@ -88,8 +44,6 @@ Form1::Form1()
 
 	_beginthread(updateLoop, 0, (void*)data);
 
-	//TODO:zwolniæ, kiedy thread siê skoñczy
-	//delete [] hCollection;
 }
 
 Form1::~Form1()
@@ -99,23 +53,8 @@ Form1::~Form1()
 	delete[] buttonVector;
 }
 
-//void Form1::WaitingForOponent()
-//{
-//	bool start = false;
-//	while (!start)
-//	{
-//		Packet packet = client->update();
-//		if (packet.packet_type == START_EVENT)
-//		{
-//			//this->clientId = packet.client_id;
-//			start = true;
-//		}
-//	}
-//}
-
 void Form1::InitializeComponent()
 {
-	//this->infoBox = new TextView();
 	this->messagesView = new TextView();
 	this->messageBox = new TextBox();
 	this->sendButton = new Button();
@@ -123,14 +62,6 @@ void Form1::InitializeComponent()
 	this->checkButton = new Button();
 
 	this->SuspendLayout();
-
-	// 
-	// infoBox
-	// 
-	//this->infoBox->Location = new Drawing::Point(100, 100);
-	//this->infoBox->Name = "infoBox";
-	//this->infoBox->Size = new Drawing::Size(200, 100);
-	//SetWindowText(this->infoBox->hWnd, "aaa");
 
 	// 
 	// messagesView
@@ -282,7 +213,7 @@ void Form1::InitializeComponent()
 	//this->FormClosed += new EventHandler::New<Form1>(this, &Form1::Form1_FormClosed);
 
 	this->Name = "MainForm";
-	this->Text = "Nazwa aplikacji";
+	this->Text = "Chat & Play";
 	this->ResumeLayout(false);
 
 	i = 0;
@@ -296,11 +227,6 @@ void Form1::InitializeComponent()
 		SendMessage(buttonVector[i]->hWnd, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBitmap);
 		idBitmap++;
 	}
-
-	//this->activeGameLevel(1);
-	//this->activeGameLevel(4);
-	//this->disableGameLevel(4);
-
 }
 
 void Form1::sendButton_Click(void* sender, EventArgs* e)
@@ -312,7 +238,7 @@ void Form1::sendButton_Click(void* sender, EventArgs* e)
 	message = (PSTR)VirtualAlloc((LPVOID)NULL, (DWORD)(textLength + 1), MEM_COMMIT, PAGE_READWRITE);
 	GetWindowTextA(messageBox->hWnd, message, textLength + 1);
 
-	client->sendActionPackets(message);
+	client->sendMessagePacket(message);
 
 	SetWindowText(messageBox->hWnd, (LPSTR)NULL);
 
@@ -322,43 +248,62 @@ void Form1::sendButton_Click(void* sender, EventArgs* e)
 
 void Form1::gameButton_Click(void* sender, EventArgs* e)
 {
-
-	ImageButton * control = (ImageButton *)sender;
-
-	int idBitmap = control->BitmapId;
-
-	if (idBitmap == 0)
+	if (Form1::isGameStart)
 	{
+		ImageButton * control = (ImageButton *)sender;
 
-	}
-	else
-	{
-		if (idBitmap > 111 && idBitmap < 118)
+		int idBitmap = control->BitmapId;
+
+		if (idBitmap == 0)
 		{
-			idBitmap++;
+
+		}
+		else if (idBitmap == 121)
+		{
+			MessageBox(this->hWnd, "Wait ! Your oponent move.", "Information", MB_OK);
 		}
 		else
 		{
-			idBitmap = 112;
+			if (idBitmap > 111 && idBitmap < 118)
+			{
+				idBitmap++;
+			}
+			else
+			{
+				idBitmap = 112;
+			}
+
+			HBITMAP hBitmap = LoadBitmap(Application::hInstance, MAKEINTRESOURCE(idBitmap));
+			SendMessage(control->hWnd, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBitmap);
+
+			control->BitmapId = idBitmap;
 		}
-
-		HBITMAP hBitmap = LoadBitmap(Application::hInstance, MAKEINTRESOURCE(idBitmap));
-		SendMessage(control->hWnd, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBitmap);
-
-		control->BitmapId = idBitmap;
 	}
+	else
+	{
+		MessageBox(this->hWnd, "Wait for your oponent.", "Information", MB_OK);
+	}
+	
 }
 
 void Form1::checkButton_Click(void * sender, EventArgs* e)
 {
-	int idButton = (10 - level) * 4;
+	if (Form1::isGameStart)
+	{
+		int idButton = (10 - level) * 4;
 
-	client->sendGamePackets(
-		gameButtonArray[idButton]->BitmapId,
-		gameButtonArray[idButton + 1]->BitmapId,
-		gameButtonArray[idButton + 2]->BitmapId,
-		gameButtonArray[idButton + 3]->BitmapId
-		);
+		client->sendGamePacket(
+			gameButtonArray[idButton]->BitmapId,
+			gameButtonArray[idButton + 1]->BitmapId,
+			gameButtonArray[idButton + 2]->BitmapId,
+			gameButtonArray[idButton + 3]->BitmapId
+			);
+	}
+	else
+	{
+		MessageBox(this->hWnd, "Wait for your oponent.", "Information", MB_OK);
+	}
+
 }
 
 void Form1::Form1_FormClosing(void* sender, EventArgs* e)
@@ -386,28 +331,6 @@ void updateLoop(void * arg)
 	hResultButtons = data->hResultButtons;
 	gameButtons = data->gameButtons;
 
-	//HWND * hGameButtons;
-
-	//HWND * hCollection = (HWND *)arg;
-
-	//hForm1 = hCollection[0];
-	//hTextView = hCollection[1];
-
-	//hResultButtons = new HWND[ARRAY_LENGTH];
-	//int index0 = 2;
-	//for (int i = index0; i < ARRAY_LENGTH + 1; i++)
-	//{
-	//	hResultButtons[i - index0] = hCollection[i];
-	//}
-
-	//hGameButtons = new HWND[ARRAY_LENGTH];
-	//index0 = ARRAY_LENGTH + 2;
-	//for (int i = index0; i < ARRAY_LENGTH + 1; i++)
-	//{
-	//	hGameButtons[i - index0] = hCollection[i];
-	//}
-
-
 	int black = 0;
 	int white = 0;
 
@@ -417,16 +340,35 @@ void updateLoop(void * arg)
 
 		if (packet.packet_type == GAME_EVENT)
 		{
+
+			if (packet.client_id != Form1::clientId)
+			{
+				int idButton = (10 - Form1::level) * 4;
+
+				HBITMAP hBitmap;
+
+				hBitmap = LoadBitmap(Application::hInstance, MAKEINTRESOURCE(packet.bitmapId1));
+				SendMessage(gameButtons[idButton]->hWnd, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBitmap);
+
+				idButton++;
+				hBitmap = LoadBitmap(Application::hInstance, MAKEINTRESOURCE(packet.bitmapId2));
+				SendMessage(gameButtons[idButton]->hWnd, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBitmap);
+
+				idButton++;
+				hBitmap = LoadBitmap(Application::hInstance, MAKEINTRESOURCE(packet.bitmapId3));
+				SendMessage(gameButtons[idButton]->hWnd, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBitmap);
+
+				idButton++;
+				hBitmap = LoadBitmap(Application::hInstance, MAKEINTRESOURCE(packet.bitmapId4));
+				SendMessage(gameButtons[idButton]->hWnd, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBitmap);
+			}
+
 			black = packet.black;
 			white = packet.white;
-
-			black = 2;
-			white = 2;
 
 			int level = Form1::level;
 
 			int idButton = (10 - level) * 4;
-			//int idButtonMax = idButton + 4;
 
 			HBITMAP hBitmap;
 			int idBitmap = IDB_BITMAP9;
@@ -448,13 +390,38 @@ void updateLoop(void * arg)
 				SendMessage(hResultButtons[idButton], BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBitmap);
 				black--;
 				idButton++;
-
 			}
 
-			//TODO: only to test
-			DisableGameLevel(Form1::level, gameButtons);
-			Form1::level++;
-			ActiveGameLevel(Form1::level, gameButtons);
+			if (packet.black == 4)
+			{
+
+				DisableGameLevel(Form1::level, gameButtons);
+				Form1::level++;
+				SetInactiveFields(Form1::level, gameButtons);
+
+				if (packet.client_id != Form1::clientId)
+				{
+					MessageBox(hForm1, "End game.Your opponent win!", "Information", MB_OK);
+				}
+				else
+				{
+					MessageBox(hForm1, "End game.You win !", "Information", MB_OK);
+
+				}
+			}
+			else
+			{
+				DisableGameLevel(Form1::level, gameButtons);
+				Form1::level++;
+				if (packet.client_id != Form1::clientId)
+				{
+					ActiveGameLevel(Form1::level, gameButtons);
+				}
+				else
+				{
+					SetInactiveFields(Form1::level, gameButtons);
+				}
+			}
 		}
 
 		else if (packet.packet_type == MESSAGE_EVENT)
@@ -469,14 +436,26 @@ void updateLoop(void * arg)
 			}
 			msg[k] = '\0';
 
-			AddMessageToTextView(hTextView, msg);
+			AddMessageToTextView(hTextView, msg, packet.client_id);
 		}
 		else if (packet.packet_type == START_EVENT)
 		{
 			MessageBox(hForm1, "You can start the game.", "Information", MB_OK);
-			Form1::clientId = packet.client_id;
-			ActiveGameLevel(Form1::level, gameButtons);
+			Form1::isGameStart = true;
 
+			if (Form1::clientId == packet.client_id)
+			{
+				ActiveGameLevel(Form1::level, gameButtons);
+			}
+			else
+			{
+				SetInactiveFields(Form1::level, gameButtons);
+			}
+
+		}
+		else if (packet.packet_type == INIT_CONNECTION)
+		{
+			Form1::clientId = packet.client_id;
 		}
 		else if (packet.packet_type == EMPTY_PACKET)
 		{
@@ -489,7 +468,7 @@ void updateLoop(void * arg)
 	}
 }
 
-void AddMessageToTextView(HWND hTextView, char * message)
+void AddMessageToTextView(HWND hTextView, char * message, int clientId)
 {
 	PSTR content;
 	int contentLength;
@@ -498,11 +477,23 @@ void AddMessageToTextView(HWND hTextView, char * message)
 	content = (PSTR)VirtualAlloc((LPVOID)NULL, (DWORD)(contentLength + 1), MEM_COMMIT, PAGE_READWRITE);
 	GetWindowTextA(hTextView, content, contentLength + 1);
 
-	PSTR newContent = (char *)malloc(1 + contentLength + strlen(message) + strlen("\n>>"));
-	strcpy(newContent, content);
-	strcat(newContent, ">>");
-	strcat(newContent, message);
-	strcat(newContent, "\n");
+	PSTR newContent;
+	if (Form1::clientId == clientId)
+	{
+		newContent = (char *)malloc(1 + contentLength + strlen(message) + strlen("\r\nYou >> "));
+		strcpy(newContent, content);
+		strcat(newContent, "You >> ");
+		strcat(newContent, message);
+		strcat(newContent, "\r\n");
+	}
+	else
+	{
+		newContent = (char *)malloc(1 + contentLength + strlen(message) + strlen("\r\nYour friend >> "));
+		strcpy(newContent, content);
+		strcat(newContent, "Your friend >> ");
+		strcat(newContent, message);
+		strcat(newContent, "\r\n");
+	}
 
 	SetWindowText(hTextView, newContent);
 
@@ -512,7 +503,6 @@ void AddMessageToTextView(HWND hTextView, char * message)
 
 void ActiveGameLevel(int n, ImageButton** gameButtons)
 {
-
 	int idButton = (10 - n) * 4;
 	int idButtonMax = idButton + 4;
 
@@ -534,5 +524,21 @@ void DisableGameLevel(int n, ImageButton** gameButtons)
 	for (idButton; idButton < idButtonMax; idButton++)
 	{
 		gameButtons[idButton]->BitmapId = 0;
+	}
+}
+
+void SetInactiveFields(int n, ImageButton** gameButtons)
+{
+	int idButton = (10 - n) * 4;
+	int idButtonMax = idButton + 4;
+
+	HBITMAP hBitmap;
+	int idBitmap = IDB_BITMAP10;
+
+	for (idButton; idButton < idButtonMax; idButton++)
+	{
+		hBitmap = LoadBitmap(Application::hInstance, MAKEINTRESOURCE(idBitmap));
+		SendMessage(gameButtons[idButton]->hWnd, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBitmap);
+		gameButtons[idButton]->BitmapId = idBitmap;
 	}
 }

@@ -177,5 +177,8 @@
     <Image Include="..\..\..\..\..\Desktop\colors\white.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="..\..\..\..\..\Desktop\colors\grey.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

@@ -14,17 +14,16 @@
 class ClientProcedures
 {
 public:
+	ClientNetwork* network;
+	char network_data[MAX_PACKET_SIZE];
+
 	ClientProcedures(void);
 	~ClientProcedures(void);
 
-	ClientNetwork* network;
+	void sendInitPacket();
+	void sendMessagePacket(char[]);
+	void sendGamePacket(int, int, int, int);
 
-	void sendActionPackets(char[]);
-	void sendGamePackets(int, int, int, int);
-
-	char network_data[MAX_PACKET_SIZE];
-
-	//char* update();
 	Packet update();
 };
 

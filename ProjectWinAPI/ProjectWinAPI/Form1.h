@@ -19,20 +19,10 @@
 
 class Form1 : public Form
 {
-public:
-	Form1();
-	~Form1();
-
 private:
-	void WaitingForOponent();
-	void InitializeComponent();
-
-private:
-	TextView * infoBox;
 	TextView *messagesView;
 	TextBox *messageBox;
 	Button *sendButton;
-
 	Button *checkButton;
 
 	ImageButton **gameButtonArray;
@@ -40,10 +30,16 @@ private:
 	ImageButton **buttonVector;
 
 public:
-	//static DataToPass * data;
-
 	static int clientId;
 	static int level;
+	static bool isGameStart;
+
+public:
+	Form1();
+	~Form1();
+
+private:
+	void InitializeComponent();
 	
 private:
 	void sendButton_Click(void* sender, EventArgs* e);

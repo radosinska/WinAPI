@@ -4,10 +4,7 @@ unsigned int ServerProcedures::client_id;
 
 ServerProcedures::ServerProcedures(void)
 {
-	// id's to assign clients for our table
 	client_id = 0;
-
-	// set up the server network to listen 
 	network = new ServerNetwork();
 }
 
@@ -17,10 +14,10 @@ ServerProcedures::~ServerProcedures(void)
 
 void ServerProcedures::update()
 {
-	// get new clients
 	if (network->acceptNewClient(client_id))
 	{
 		printf("client %d has been connected to the server\n", client_id);
+		sendInitPacket();
 
 		if (client_id % 2 == 1)
 		{
@@ -31,7 +28,6 @@ void ServerProcedures::update()
 		if (client_id == 0)
 		{
 			srand(time(NULL));
-			//int wylosowana_liczba =( std::rand() % ile_liczb_w_przedziale ) + startowa_liczba;
 			this->bitmapId1 = (std::rand() % 7) + 112;
 			this->bitmapId2 = (std::rand() % 7) + 112;
 			this->bitmapId3 = (std::rand() % 7) + 112;
@@ -49,7 +45,6 @@ void ServerProcedures::receiveFromClients()
 
 	Packet packet;
 
-	// go through all clients
 	std::map<unsigned int, SOCKET>::iterator iter;
 
 	for (iter = network->sessions.begin(); iter != network->sessions.end(); iter++)
@@ -71,9 +66,7 @@ void ServerProcedures::receiveFromClients()
 			switch (packet.packet_type) {
 
 			case INIT_CONNECTION:
-
-				//server received init packet from client
-				//sendActionPackets();
+				sendInitPacket();
 				break;
 
 			case MESSAGE_EVENT:
@@ -82,9 +75,7 @@ void ServerProcedures::receiveFromClients()
 				std::cout << packet.message;
 				printf("\n");
 				
-				//Przes³anie tej wiadomoœci do wszystkich klientów
-				sendMessagePackets(packet.message);
-
+				sendMessagePackets(packet.message,packet.client_id);
 				break;
 
 			case GAME_EVENT:
@@ -99,6 +90,20 @@ void ServerProcedures::receiveFromClients()
 	}
 }
 
+void ServerProcedures::sendInitPacket()
+{
+	const unsigned int packet_size = sizeof(Packet);
+	char packet_data[packet_size];
+
+	Packet packet;
+	packet.packet_type = INIT_CONNECTION;
+	packet.client_id = client_id;
+
+	packet.serialize(packet_data);
+
+	network->sendToUser(client_id, packet_data, packet_size);
+}
+
 void ServerProcedures::sendStartGamePackets()
 {
 	const unsigned int packet_size = sizeof(Packet);
@@ -106,23 +111,23 @@ void ServerProcedures::sendStartGamePackets()
 
 	Packet packet;
 	packet.packet_type = START_EVENT;
-	packet.client_id = client_id;
+	packet.client_id = client_id-1;
 
 	packet.serialize(packet_data);
 
 	network->sendToUser(client_id - 1, packet_data, packet_size);
+	Sleep(1000);
 	network->sendToUser(client_id, packet_data, packet_size);
 }
 
-void ServerProcedures::sendMessagePackets(char msg[])
+void ServerProcedures::sendMessagePackets(char msg[], int clientId)
 {
-	// send action packet
 	const unsigned int packet_size = sizeof(Packet);
 	char packet_data[packet_size];
 
 	Packet packet;
 	packet.packet_type = MESSAGE_EVENT;
-	packet.client_id = client_id;
+	packet.client_id = clientId;
 	
 	int i = 0;
 	for (i; i < MAX_MESSAGE_SIZE; i++)
@@ -132,24 +137,44 @@ void ServerProcedures::sendMessagePackets(char msg[])
 
 	packet.serialize(packet_data);
 
-	network->sendToAll(packet_data, packet_size);
+	network->sendToUser(clientId, packet_data, packet_size);
+	if (clientId % 2 == 1)
+	{
+		network->sendToUser(clientId - 1, packet_data, packet_size);
+	}
+	else
+	{
+		network->sendToUser(clientId + 1, packet_data, packet_size);
+	}
 }
 
-void ServerProcedures::sendGamePackets(int, int)
+void ServerProcedures::sendGamePackets(int clientId, int bitmap1, int bitmap2, int bitmap3, int bitmap4)
 {
 	const unsigned int packet_size = sizeof(Packet);
 	char packet_data[packet_size];
 
 	Packet packet;
 	packet.packet_type = GAME_EVENT;
-	packet.client_id = client_id;
+	packet.client_id = clientId;
 	
 	packet.black = this->black;
 	packet.white = this->white;
+	packet.bitmapId1 = bitmap1;
+	packet.bitmapId2 = bitmap2;
+	packet.bitmapId3 = bitmap3;
+	packet.bitmapId4 = bitmap4;
 
 	packet.serialize(packet_data);
 
-	network->sendToAll(packet_data, packet_size);
+	network->sendToUser(clientId, packet_data, packet_size);
+	if (clientId % 2 == 1)
+	{
+		network->sendToUser(clientId - 1, packet_data, packet_size);
+	}
+	else
+	{
+		network->sendToUser(clientId + 1, packet_data, packet_size);
+	}
 }
 
 void ServerProcedures::DataProcessing(Packet packet)
@@ -160,7 +185,6 @@ void ServerProcedures::DataProcessing(Packet packet)
 	int serverCombination[4] = { bitmapId1, bitmapId2, bitmapId3, bitmapId4 };
 	int userCombination[4] = { packet.bitmapId1, packet.bitmapId2, packet.bitmapId3, packet.bitmapId4 };
 
-	//TODO: process data
 	for (int i = 0; i < 4; i++)
 	{
 		if (serverCombination[i] == userCombination[i])
@@ -192,6 +216,5 @@ void ServerProcedures::DataProcessing(Packet packet)
 		}
 	}
 
-	//TODO: send reply
-	this->sendGamePackets(black, white);
+	this->sendGamePackets(packet.client_id,packet.bitmapId1, packet.bitmapId2, packet.bitmapId3, packet.bitmapId4);
 }
