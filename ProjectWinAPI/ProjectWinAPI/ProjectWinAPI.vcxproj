@@ -82,6 +82,7 @@
     <ClInclude Include="ClientProcedures.h" />
     <ClInclude Include="Control.h" />
     <ClInclude Include="ControlCollection.h" />
+    <ClInclude Include="DataToPass.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="EventArgs.h" />
     <ClInclude Include="EventHandler.h" />
@@ -118,12 +119,14 @@
     <ResourceCompile Include="Resource.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\..\..\..\..\Desktop\colors\black.bmp" />
     <Image Include="..\..\..\..\..\Desktop\colors\blue.bmp" />
     <Image Include="..\..\..\..\..\Desktop\colors\green.bmp" />
     <Image Include="..\..\..\..\..\Desktop\colors\orange.bmp" />
     <Image Include="..\..\..\..\..\Desktop\colors\pink.bmp" />
     <Image Include="..\..\..\..\..\Desktop\colors\purple.bmp" />
     <Image Include="..\..\..\..\..\Desktop\colors\red.bmp" />
+    <Image Include="..\..\..\..\..\Desktop\colors\white.bmp" />
     <Image Include="..\..\..\..\..\Desktop\colors\yellow.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

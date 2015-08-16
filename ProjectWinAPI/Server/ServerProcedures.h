@@ -1,5 +1,7 @@
 #pragma once
 
+#include <ctime>
+
 #include "ServerNetwork.h"
 #include "NetworkData.h"
 
@@ -15,7 +17,9 @@ public:
 
 	void receiveFromClients();
 
-	void sendActionPackets(char[]);
+	void sendStartGamePackets();
+	void sendMessagePackets(char[]);
+	void sendGamePackets(int,int);
 
 private:
 
@@ -27,4 +31,16 @@ private:
 
 	// data buffer
 	char network_data[MAX_PACKET_SIZE];
+
+private:
+	int bitmapId1;
+	int bitmapId2;
+	int bitmapId3;
+	int bitmapId4;
+
+	int black;
+	int white;
+
+private:
+	void DataProcessing(Packet);
 };

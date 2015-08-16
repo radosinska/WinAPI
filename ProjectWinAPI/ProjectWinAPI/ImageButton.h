@@ -11,6 +11,10 @@ class ImageButton : public Control
 public:
 	ImageButton();
 	~ImageButton();
+
+public:
+	int ButtonId;
+	int BitmapId;
 };
 
 #endif

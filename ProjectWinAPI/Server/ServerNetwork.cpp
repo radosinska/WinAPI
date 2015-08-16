@@ -147,3 +147,20 @@ void ServerNetwork::sendToAll(char * packets, int totalSize)
 		}
 	}
 }
+
+void ServerNetwork::sendToUser(int client_id, char * packets, int totalSize)
+{
+	if (sessions.find(client_id) != sessions.end())
+	{
+		SOCKET currentSocket = sessions[client_id];
+		
+		int iSendResult = NetworkServices::sendMessage(currentSocket, packets, totalSize);
+
+		if (iSendResult == SOCKET_ERROR)
+		{
+			printf("send failed with error: %d\n", WSAGetLastError());
+			closesocket(currentSocket);
+		}
+	}
+}
+

@@ -99,6 +99,9 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DataToPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Program.cpp">
@@ -166,6 +169,12 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\..\..\..\..\Desktop\colors\yellow.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\..\..\Desktop\colors\black.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\..\..\Desktop\colors\white.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

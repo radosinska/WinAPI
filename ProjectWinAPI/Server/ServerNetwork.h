@@ -25,6 +25,8 @@ public:
 	// send data to all clients
 	void sendToAll(char * packets, int totalSize);
 
+	void sendToUser(int client_id, char * packets, int totalSize);
+
 	// receive incoming data
 	int receiveData(unsigned int client_id, char * recvbuf);
 

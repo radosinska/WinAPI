@@ -20,11 +20,12 @@ public:
 	ClientNetwork* network;
 
 	void sendActionPackets(char[]);
+	void sendGamePackets(int, int, int, int);
 
 	char network_data[MAX_PACKET_SIZE];
 
-	char* update();
-
+	//char* update();
+	Packet update();
 };
 
 #endif
