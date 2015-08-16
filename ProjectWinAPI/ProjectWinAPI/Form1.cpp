@@ -510,7 +510,7 @@ void AddMessageToTextView(HWND hTextView, char * message)
 	VirtualFree(content, 0, MEM_RELEASE);
 }
 
-void activeGameLevel(int n, ImageButton** gameButtons)
+void ActiveGameLevel(int n, ImageButton** gameButtons)
 {
 
 	int idButton = (10 - n) * 4;
@@ -527,7 +527,7 @@ void activeGameLevel(int n, ImageButton** gameButtons)
 	}
 }
 
-void disableGameLevel(int n, ImageButton** gameButtons)
+void DisableGameLevel(int n, ImageButton** gameButtons)
 {
 	int idButton = (10 - n) * 4;
 	int idButtonMax = idButton + 4;
