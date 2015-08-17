@@ -66,11 +66,10 @@ void ServerProcedures::receiveFromClients()
 			switch (packet.packet_type) {
 
 			case INIT_CONNECTION:
-				sendInitPacket();
+				//sendInitPacket();
 				break;
 
 			case MESSAGE_EVENT:
-
 				printf("server received message event packet from client: ");
 				std::cout << packet.message;
 				printf("\n");

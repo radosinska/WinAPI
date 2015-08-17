@@ -64,28 +64,52 @@ void Form1::InitializeComponent()
 	this->SuspendLayout();
 
 	// 
-	// messagesView
-	// 
-	this->messagesView->Location = new Drawing::Point(300, 35);
-	this->messagesView->Name = "textBox2";
-	this->messagesView->Size = new Drawing::Size(365, 250);
-
-	// 
 	// messageBox
 	// 
-	this->messageBox->Location = new Drawing::Point(300, 295);
+	this->messageBox->Location = new Drawing::Point(300, 35);
 	this->messageBox->Name = "messageBox";
 	this->messageBox->Size = new Drawing::Size(365, 110);
 
 	// 
 	// sendButton
 	// 
-	this->sendButton->Location = new Drawing::Point(585, 415);
+	this->sendButton->Location = new Drawing::Point(300, 155);
 	this->sendButton->Name = "sendButton";
-	this->sendButton->Size = new Drawing::Size(80, 25);
+	this->sendButton->Size = new Drawing::Size(365, 25);
 	this->sendButton->Text = "send";
 
 	this->sendButton->Click += new EventHandler::New<Form1>(this, &Form1::sendButton_Click);
+
+	// 
+	// messagesView
+	// 
+	this->messagesView->Location = new Drawing::Point(300, 190);
+	this->messagesView->Name = "textBox2";
+	this->messagesView->Size = new Drawing::Size(365, 250);
+
+	//// 
+	//// messagesView
+	//// 
+	//this->messagesView->Location = new Drawing::Point(300, 35);
+	//this->messagesView->Name = "textBox2";
+	//this->messagesView->Size = new Drawing::Size(365, 250);
+
+	//// 
+	//// messageBox
+	//// 
+	//this->messageBox->Location = new Drawing::Point(300, 295);
+	//this->messageBox->Name = "messageBox";
+	//this->messageBox->Size = new Drawing::Size(365, 110);
+
+	//// 
+	//// sendButton
+	//// 
+	//this->sendButton->Location = new Drawing::Point(585, 415);
+	//this->sendButton->Name = "sendButton";
+	//this->sendButton->Size = new Drawing::Size(80, 25);
+	//this->sendButton->Text = "send";
+
+	//this->sendButton->Click += new EventHandler::New<Form1>(this, &Form1::sendButton_Click);
 
 	// 
 	// checkButton
